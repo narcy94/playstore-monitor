@@ -1,7 +1,7 @@
 import requests
-import re
 import json
 import os
+import re
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
@@ -47,25 +47,18 @@ def get_playstore_version(package):
     }
 
     r = requests.get(url, headers=headers, timeout=15)
+
     if r.status_code != 200:
+        print(f"Error HTTP {r.status_code} for {package}")
         return None
 
-    # Método más confiable
-    match = re.search(r'Current Version.*?>([\d\.]+)<', r.text)
+    match = re.search(r'"softwareVersion":"([^"]+)"', r.text)
 
     if match:
         return match.group(1)
 
+    print(f"No version found for {package}")
     return None
-
-
-def send_telegram(message):
-    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    data = {
-        "chat_id": CHAT_ID,
-        "text": message
-    }
-    requests.post(url, data=data)
 
 
 def load_versions():
@@ -80,11 +73,21 @@ def save_versions(data):
         json.dump(data, f, indent=2)
 
 
+def send_telegram(message):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    requests.post(url, data={"chat_id": CHAT_ID, "text": message})
+
+
 def main():
     saved_versions = load_versions()
 
     for app in APPS:
+        print(f"Checking {app}")
+
         current_version = get_playstore_version(app)
+
+        print(f"Detected version: {current_version}")
+
         if not current_version:
             continue
 
@@ -97,10 +100,8 @@ def main():
         if current_version != old_version:
             message = (
                 f"🚀 Nueva versión detectada\n\n"
-                f"App: {app}\n"
-                f"Versión anterior: {old_version}\n"
-                f"Nueva versión: {current_version}\n"
-                f"https://play.google.com/store/apps/details?id={app}"
+                f"{app}\n"
+                f"{old_version} → {current_version}"
             )
             send_telegram(message)
             saved_versions[app] = current_version
