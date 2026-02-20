@@ -7,8 +7,33 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
 APPS = [
+    "net.tcodes.altaufikvpn",
+    "xyz.tekidoer.austroplus.vpn",
+    "com.boost.vpn",
     "com.crissenhz.servers",
-    # agrega aquí tus otras apps
+    "com.zfreevpn.dev",
+    "com.thomas.http",
+    "xyz.easypro.httpcustom",
+    "com.fenix.vpn",
+    "com.jirehvpn",
+    "com.fleet.vpn",
+    "com.vpnproxymd.mdproxyvpn",
+    "vpn.minapronet.com.eg",
+    "com.msyvpn.custom",
+    "com.msyvpn.lite",
+    "app.mtkingnet.buildd",
+    "com.peru.vpn",
+    "com.socketdevz.dev",
+    "rx.teamhz.plus",
+    "com.tunneldoom.http",
+    "turbo.mx.anuncios",
+    "com.urbanvpn.android",
+    "com.live.geesports",
+    "com.magmaplayer",
+    "com.whatsapp",
+    "com.pixlr.express",
+    "com.social.devweb.playaf",
+    "lyriceditor.lyricsearch.embedlyrictomp3.syncedlyriceditor"
 ]
 
 VERSION_FILE = "versions.json"
@@ -66,7 +91,13 @@ def main():
             continue
 
         if current_version != old_version:
-            message = f"🚀 Nueva versión detectada\n\nApp: {app}\nVersión: {current_version}"
+            message = (
+                f"🚀 Nueva versión detectada\n\n"
+                f"App: {app}\n"
+                f"Versión anterior: {old_version}\n"
+                f"Nueva versión: {current_version}\n"
+                f"https://play.google.com/store/apps/details?id={app}"
+            )
             send_telegram(message)
             saved_versions[app] = current_version
 
