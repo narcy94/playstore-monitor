@@ -39,10 +39,13 @@ APPS = [
 VERSION_FILE = "versions.json"
 
 
-def get_playstore_version(package):
+def get_playstore_data(package):
     try:
         result = app(package, lang="en", country="us")
-        return result.get("version")
+        return {
+            "version": result.get("version"),
+            "title": result.get("title")
+        }
     except Exception as e:
         print(f"Error getting {package}: {e}")
         return None
@@ -71,7 +74,12 @@ def main():
     for app_id in APPS:
         print(f"Checking {app_id}")
 
-        current_version = get_playstore_version(app_id)
+        data = get_playstore_data(app_id)
+        if not data:
+            continue
+
+        current_version = data["version"]
+        app_name = data["title"]
 
         print(f"Detected version: {current_version}")
 
@@ -87,8 +95,10 @@ def main():
         if current_version != old_version:
             message = (
                 f"🚀 Nueva versión detectada\n\n"
-                f"{app_id}\n"
-                f"{old_version} → {current_version}"
+                f"App: {app_name}\n"
+                f"Package: {app_id}\n"
+                f"{old_version} → {current_version}\n"
+                f"https://play.google.com/store/apps/details?id={app_id}"
             )
             send_telegram(message)
             saved_versions[app_id] = current_version
