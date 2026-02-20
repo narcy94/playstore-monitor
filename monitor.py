@@ -1,7 +1,7 @@
-import requests
 import json
 import os
-import re
+from google_play_scraper import app
+import requests
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
@@ -40,25 +40,12 @@ VERSION_FILE = "versions.json"
 
 
 def get_playstore_version(package):
-    url = f"https://play.google.com/store/apps/details?id={package}&hl=en&gl=us"
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Accept-Language": "en-US,en;q=0.9"
-    }
-
-    r = requests.get(url, headers=headers, timeout=15)
-
-    if r.status_code != 200:
-        print(f"Error HTTP {r.status_code} for {package}")
+    try:
+        result = app(package, lang="en", country="us")
+        return result.get("version")
+    except Exception as e:
+        print(f"Error getting {package}: {e}")
         return None
-
-    match = re.search(r'"softwareVersion":"([^"]+)"', r.text)
-
-    if match:
-        return match.group(1)
-
-    print(f"No version found for {package}")
-    return None
 
 
 def load_versions():
@@ -81,30 +68,30 @@ def send_telegram(message):
 def main():
     saved_versions = load_versions()
 
-    for app in APPS:
-        print(f"Checking {app}")
+    for app_id in APPS:
+        print(f"Checking {app_id}")
 
-        current_version = get_playstore_version(app)
+        current_version = get_playstore_version(app_id)
 
         print(f"Detected version: {current_version}")
 
         if not current_version:
             continue
 
-        old_version = saved_versions.get(app)
+        old_version = saved_versions.get(app_id)
 
         if old_version is None:
-            saved_versions[app] = current_version
+            saved_versions[app_id] = current_version
             continue
 
         if current_version != old_version:
             message = (
                 f"🚀 Nueva versión detectada\n\n"
-                f"{app}\n"
+                f"{app_id}\n"
                 f"{old_version} → {current_version}"
             )
             send_telegram(message)
-            saved_versions[app] = current_version
+            saved_versions[app_id] = current_version
 
     save_versions(saved_versions)
 
