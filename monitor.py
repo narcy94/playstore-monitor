@@ -42,13 +42,17 @@ VERSION_FILE = "versions.json"
 def get_playstore_version(package):
     url = f"https://play.google.com/store/apps/details?id={package}&hl=en&gl=us"
     headers = {
-        "User-Agent": "Mozilla/5.0"
+        "User-Agent": "Mozilla/5.0",
+        "Accept-Language": "en-US,en;q=0.9"
     }
-    r = requests.get(url, headers=headers, timeout=10)
+
+    r = requests.get(url, headers=headers, timeout=15)
     if r.status_code != 200:
         return None
 
-    match = re.search(r'"softwareVersion":"(.*?)"', r.text)
+    # Método más confiable
+    match = re.search(r'Current Version.*?>([\d\.]+)<', r.text)
+
     if match:
         return match.group(1)
 
@@ -73,7 +77,7 @@ def load_versions():
 
 def save_versions(data):
     with open(VERSION_FILE, "w") as f:
-        json.dump(data, f)
+        json.dump(data, f, indent=2)
 
 
 def main():
