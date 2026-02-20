@@ -1,5 +1,8 @@
 name: PlayStore Monitor
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: '0 * * * *'
