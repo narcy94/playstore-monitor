@@ -94,12 +94,14 @@ def main():
 
         if current_version != old_version:
             message = (
-                f"🚀 Nueva versión detectada\n\n"
-                f"App: {app_name}\n"
-                f"Package: {app_id}\n"
-                f"{old_version} → {current_version}\n"
+                f"⚙️ Nueva versión detectada\n\n"
+                f"App: {app_name}\n\n"
+                f"Package: {app_id}\n\n"
+                f"Version Anterior: {old_version}\n"
+                f"Version Nueva: {current_version}\n\n"
                 f"https://play.google.com/store/apps/details?id={app_id}"
             )
+
             send_telegram(message)
             saved_versions[app_id] = current_version
 
