@@ -33,7 +33,13 @@ APPS = [
     "com.whatsapp",
     "com.pixlr.express",
     "com.social.devweb.playaf",
-    "lyriceditor.lyricsearch.embedlyrictomp3.syncedlyriceditor"
+    "com.apnatunnel.lite",
+    "app.vpn.amtunnellite",
+    "com.smartiptunnel.vpn",
+    "co.strongteam.ultra",
+    "com.socketclay.http",
+    "com.onspace.http",
+    "com.cloud.focus"
 ]
 
 VERSION_FILE = "versions.json"
