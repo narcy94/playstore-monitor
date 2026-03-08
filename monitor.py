@@ -48,10 +48,18 @@ VERSION_FILE = "versions.json"
 def get_playstore_data(package):
     try:
         result = app(package, lang="en", country="us")
+
+        version = result.get("version")
+
+        # Solución para apps que devuelven "Varies with device"
+        if version == "Varies with device":
+            version = str(result.get("versionCode"))
+
         return {
-            "version": result.get("version"),
+            "version": version,
             "title": result.get("title")
         }
+
     except Exception as e:
         print(f"Error getting {package}: {e}")
         return None
@@ -71,7 +79,11 @@ def save_versions(data):
 
 def send_telegram(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    requests.post(url, data={"chat_id": CHAT_ID, "text": message})
+    requests.post(
+        url,
+        data={"chat_id": CHAT_ID, "text": message},
+        timeout=15
+    )
 
 
 def main():
