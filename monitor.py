@@ -12,7 +12,6 @@ APPS = [
     "com.boost.vpn",
     "com.crissenhz.servers",
     "com.zfreevpn.dev",
-    "com.thomas.http",
     "xyz.easypro.httpcustom",
     "com.fenix.vpn",
     "com.jirehvpn",
@@ -28,11 +27,9 @@ APPS = [
     "com.tunneldoom.http",
     "turbo.mx.anuncios",
     "com.urbanvpn.android",
-    "com.live.geesports",
     "com.magmaplayer",
     "com.whatsapp",
     "com.social.devweb.playaf",
-    "com.nexprime.prominex",
     "nur.nurtunnelvpn.tunnelnur"
 ]
 
