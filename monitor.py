@@ -31,15 +31,8 @@ APPS = [
     "com.live.geesports",
     "com.magmaplayer",
     "com.whatsapp",
-    "com.pixlr.express",
     "com.social.devweb.playaf",
-    "com.apnatunnel.lite",
-    "app.vpn.amtunnellite",
-    "com.smartiptunnel.vpn",
-    "co.strongteam.ultra",
-    "com.socketclay.http",
-    "com.onspace.http",
-    "com.cloud.focus"
+    "lyriceditor.lyricsearch.embedlyrictomp3.syncedlyriceditor"
 ]
 
 VERSION_FILE = "versions.json"
@@ -50,14 +43,18 @@ def get_playstore_data(package):
         result = app(package, lang="en", country="us")
 
         version = result.get("version")
+        title = result.get("title")
 
-        # Solución para apps que devuelven "Varies with device"
-        if version == "Varies with device":
-            version = str(result.get("versionCode"))
+        # Ignorar versiones inválidas
+        if version is None:
+            return None
+
+        if str(version).lower() == "varies with device":
+            return None
 
         return {
             "version": version,
-            "title": result.get("title")
+            "title": title
         }
 
     except Exception as e:
@@ -79,11 +76,7 @@ def save_versions(data):
 
 def send_telegram(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-    requests.post(
-        url,
-        data={"chat_id": CHAT_ID, "text": message},
-        timeout=15
-    )
+    requests.post(url, data={"chat_id": CHAT_ID, "text": message})
 
 
 def main():
@@ -100,9 +93,6 @@ def main():
         app_name = data["title"]
 
         print(f"Detected version: {current_version}")
-
-        if not current_version:
-            continue
 
         old_version = saved_versions.get(app_id)
 
