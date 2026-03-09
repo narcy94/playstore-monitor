@@ -40,27 +40,26 @@ VERSION_FILE = "versions.json"
 
 
 def get_playstore_data(package):
-    try:
-        result = app(package, lang="en", country="us")
+    countries = ["us", "id", "br", "mx", "in"]
 
-        version = result.get("version")
-        title = result.get("title")
+    for c in countries:
+        try:
+            result = app(package, lang="en", country=c)
 
-        # Ignorar versiones inválidas
-        if version is None:
-            return None
+            version = result.get("version")
+            title = result.get("title")
 
-        if str(version).lower() == "varies with device":
-            return None
+            if version and str(version).lower() != "varies with device":
+                return {
+                    "version": version,
+                    "title": title
+                }
 
-        return {
-            "version": version,
-            "title": title
-        }
+        except Exception as e:
+            print(f"{package} not available in {c}")
 
-    except Exception as e:
-        print(f"Error getting {package}: {e}")
-        return None
+    print(f"Error getting {package}: App not found in tested regions")
+    return None
 
 
 def load_versions():
