@@ -48,14 +48,20 @@ def get_playstore_data(package):
 
             version = result.get("version")
             title = result.get("title")
+            version_code = result.get("versionCode")
 
-            if version and str(version).lower() != "varies with device":
+            # Si version no existe usar versionCode
+            if not version or str(version).lower() == "varies with device":
+                if version_code:
+                    version = str(version_code)
+
+            if version:
                 return {
                     "version": version,
                     "title": title
                 }
 
-        except Exception as e:
+        except Exception:
             print(f"{package} not available in {c}")
 
     print(f"Error getting {package}: App not found in tested regions")
