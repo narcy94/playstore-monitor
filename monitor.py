@@ -32,7 +32,8 @@ APPS = [
     "com.magmaplayer",
     "com.whatsapp",
     "com.social.devweb.playaf",
-    "lyriceditor.lyricsearch.embedlyrictomp3.syncedlyriceditor"
+    "com.nexprime.prominex",
+    "nur.nurtunnelvpn.tunnelnur"
 ]
 
 VERSION_FILE = "versions.json"
