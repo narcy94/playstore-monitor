@@ -8,7 +8,7 @@
   "com.fenix.vpn": "15.8",
   "com.jirehvpn": "1.4",
   "com.fleet.vpn": "3.5.6",
-  "com.vpnproxymd.mdproxyvpn": "1.0.25",
+  "com.vpnproxymd.mdproxyvpn": "1.0.27",
   "vpn.minapronet.com.eg": "81.0.0",
   "com.msyvpn.custom": "10.4.2",
   "com.msyvpn.lite": "10.4.2",
@@ -29,5 +29,5 @@
   "com.socketclay.http": "3.3.2",
   "com.onspace.http": "3.9",
   "com.cloud.focus": "4.3",
-  "nur.nurtunnelvpn.tunnelnur": "v1.0.29"
+  "nur.nurtunnelvpn.tunnelnur": "v1.0.36"
 }
